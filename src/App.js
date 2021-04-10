@@ -1,25 +1,72 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import Header from './components/Header'
+import styled from '@emotion/styled';
+import Form from './components/Form';
+import Resumen from './components/Resumen';
+import Result from './components/Result';
+import Spinner from './components/Spinner';
 
+
+
+
+
+const Container = styled.div`
+max-width: 600px;
+margin: 5% auto;
+ `
+ const FormContainer = styled.div`
+ background-color: #fff;
+ padding: 3rem;
+ height: 50%;
+ `
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [ resumen, saveResumen ] = useState({
+    cotizacion: 0,
+    data: {
+      marca: '',
+      year: '',
+      plan: ''
+    }
+  });
+
+  const [ loading, saveLoading] = useState(false);
+  //extraer datos
+  const { cotizacion, data } = resumen;
+    return (
+      <Container>
+        <Header 
+          titulo="Cotizador de seguros"
+        />
+        <FormContainer>
+
+          <Form 
+          saveResumen={saveResumen}
+          saveLoading={ saveLoading }
+          />
+          { loading 
+          ? 
+          (
+          <Spinner />
+          ) 
+          : 
+          ( <>
+             <Resumen 
+          data={ data }
+          />
+
+          <Result 
+          cotizacion={cotizacion}
+          />
+          </>
+          )}
+          
+        
+
+        </FormContainer>
+      </Container>
+    );
+      
+     
 }
 
 export default App;
